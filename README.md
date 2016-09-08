@@ -6,12 +6,14 @@ This role shuts down iptables so that Apigee OPDK may be installed.
 Requirements
 ------------
 
-This role runs if it is not executing inside of a Docker container.
+The installation of Apigee OPDK requires root access. Credentials must also be supplied to override the empty placeholders
+provided here. It is recommended that credentials be consolidated into a single credentials.yml file that can be stored 
+separately. It is assumed that files containing credentials are stored in the ~/.apigee folder. 
 
 Role Variables
 --------------
 
-ansible_virtualization_type: Populated by the setup module. 
+None
 
 Dependencies
 ------------
@@ -21,8 +23,6 @@ Dependencies
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     ---
     - hosts: '{{ hosts }}'
