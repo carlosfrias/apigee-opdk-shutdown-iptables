@@ -1,0 +1,16 @@
+---
+# tasks file for apigee-shutdown-iptables
+- name: Stop Iptables service
+  service:
+    name: iptables
+    state: stopped
+  when: (ansible_distribution | lower == "centos" or ansible_distribution | lower == "oraclelinux")  and ansible_distribution_major_version | version_compare("6", "==") and not ansible_virtualization_type | lower == "docker"
+  register: iptables_status
+
+- name: Fail playbook if Iptables is running
+  debug:
+    msg: 'iptables must be disabled, please restart node'
+  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
+  notify:
+  - restart node
+
