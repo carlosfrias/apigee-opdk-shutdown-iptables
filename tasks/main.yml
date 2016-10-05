@@ -11,7 +11,17 @@
   debug:
     msg: 'iptables must be disabled, please restart node'
   when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
-  notify:
-  - restart node
 
-- meta: flush_handlers
+
+- name: Restarting node now
+  become: true
+  ignore_errors: yes
+  shell: 'reboot now'
+  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+  async: 0
+  poll: 0
+  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
+
+- name: Waiting for server to complete reboot cycle
+  local_action: wait_for port='{{ ansible_port }}' state=started
+
