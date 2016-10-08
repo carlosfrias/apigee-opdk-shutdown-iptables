@@ -18,7 +18,7 @@ None
 Dependencies
 ------------
 
-* opdk-setup-default-settings
+* apigee-opdk-setup-default-settings
 
 
 Example Playbook
