@@ -21,6 +21,8 @@
 #  poll: 0
 #  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
 
-#- name: Waiting for server to complete reboot cycle
-#  local_action: wait_for port='{{ ansible_port }}' state=started
-
+#- name: Waiting for server to complete restarting
+#  become: no
+#  local_action: wait_for host='{{ ansible_host }}' state=started delay=60 timeout='{{ server_restart_timeout }}'
+#  when: "{{ ansible_selinux.status | lower != 'disabled' and (server_restart is defined and server_restart | bool )}}"
+#  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
