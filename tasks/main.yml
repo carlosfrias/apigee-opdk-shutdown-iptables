@@ -11,18 +11,3 @@
   fail:
     msg: 'iptables must be disabled, please restart node'
   when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
-
-#- name: Restarting node now
-#  become: true
-#  ignore_errors: yes
-#  shell: 'reboot now'
-#  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-#  async: 0
-#  poll: 0
-#  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
-
-#- name: Waiting for server to complete restarting
-#  become: no
-#  local_action: wait_for host='{{ ansible_host }}' state=started delay=60 timeout='{{ server_restart_timeout }}'
-#  when: "{{ ansible_selinux.status | lower != 'disabled' and (server_restart is defined and server_restart | bool )}}"
-#  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
