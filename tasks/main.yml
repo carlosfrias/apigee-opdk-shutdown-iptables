@@ -5,9 +5,13 @@
     name: iptables
     state: stopped
   when: (ansible_distribution | lower == "centos" or ansible_distribution | lower == "oraclelinux")  and ansible_distribution_major_version | version_compare("6", "==") and not ansible_virtualization_type | lower == "docker"
-  register: iptables_status
+  register: iptables_service
+
+- name: Indicate whether iptables are disabled
+  set_fact:
+    iptables_disabled: "{{ iptables_service.status == 'disabled' }}"
 
 - name: Fail playbook if Iptables is running
   fail:
     msg: 'iptables must be disabled, please restart node'
-  when: "{{ iptables_status is defined and iptables_status.state is defined and iptables_status.state!= 'stopped' }}"
+  when: iptables_disabled is defined and not iptables_disabled
