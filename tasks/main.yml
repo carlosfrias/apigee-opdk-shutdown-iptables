@@ -8,8 +8,9 @@
   register: iptables_service
 
 - name: Indicate whether iptables are disabled
-  set_fact:
-    iptables_disabled: "{{ (iptables_service.state == 'disabled') or (iptables_service.state == 'stopped') }}"
+  cache:
+    key: 'iptables_disabled'
+    value: "{{ (iptables_service.state == 'disabled') or (iptables_service.state == 'stopped') }}"
 
 - name: Fail playbook if Iptables is running
   fail:
