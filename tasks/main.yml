@@ -9,7 +9,7 @@
 
 - name: Indicate whether iptables are disabled
   set_fact:
-    iptables_disabled: "{{ iptables_service.status == 'disabled' }}"
+    iptables_disabled: "{{ (iptables_service.state == 'disabled') or iptables_service.state == 'stopped') }}"
 
 - name: Fail playbook if Iptables is running
   fail:
