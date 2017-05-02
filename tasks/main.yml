@@ -7,6 +7,10 @@
   when: (ansible_distribution | lower == "centos" or ansible_distribution | lower == "oraclelinux")  and ansible_distribution_major_version | version_compare("6", "==") and not ansible_virtualization_type | lower == "docker"
   register: iptables_service
 
+- name: Report iptables_service captured
+  debug:
+    var: iptables_services
+
 - name: Indicate whether iptables are disabled
   cache:
     key: 'iptables_disabled'
