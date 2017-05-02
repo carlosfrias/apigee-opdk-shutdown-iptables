@@ -1,22 +1,25 @@
 ---
 # tasks file for apigee-shutdown-iptables
-- name: Stop Iptables service
-  service:
-    name: iptables
-    state: stopped
-#  when: (ansible_distribution | lower == "centos" or ansible_distribution | lower == "oraclelinux")  and ansible_distribution_major_version | version_compare("6", "==") and not ansible_virtualization_type | lower == "docker"
-  register: iptables_service
+- block:
 
-- name: Report iptables_service captured
-  debug:
-    var: iptables_services
+  - name: Stop Iptables service
+    service:
+      name: iptables
+      state: stopped
+    register: iptables_service
 
-- name: Indicate whether iptables are disabled
-  cache:
-    key: 'iptables_disabled'
-    value: "{{ (iptables_service.state == 'disabled') or (iptables_service.state == 'stopped') }}"
+  - name: Report iptables_service captured
+    debug:
+      var: iptables_services
 
-- name: Fail playbook if Iptables is running
-  fail:
-    msg: 'iptables must be disabled, please restart node'
-  when: iptables_disabled is defined and not iptables_disabled
+  - name: Indicate whether iptables are disabled
+    cache:
+      key: 'iptables_disabled'
+      value: "{{ (iptables_service.state == 'disabled') or (iptables_service.state == 'stopped') }}"
+
+  - name: Fail playbook if Iptables is running
+    fail:
+      msg: 'iptables must be disabled, please restart node'
+    when: iptables_disabled is defined and not iptables_disabled
+
+  when: (ansible_distribution | lower == "centos" or ansible_distribution | lower == "oraclelinux")  and ansible_distribution_major_version | version_compare("7", "<") and not ansible_virtualization_type | lower == "docker"
