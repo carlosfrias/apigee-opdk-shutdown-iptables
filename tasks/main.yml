@@ -8,10 +8,6 @@
       state: stopped
     register: iptables_service
 
-  - name: Report iptables_service captured
-    debug:
-      var: iptables_services
-
   - name: Indicate whether iptables are disabled
     cache:
       key: 'iptables_disabled'
