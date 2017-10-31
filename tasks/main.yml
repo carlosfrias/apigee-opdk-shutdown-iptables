@@ -3,6 +3,7 @@
 - block:
 
   - name: Stop Iptables service
+    become: yes
     service:
       name: iptables
       state: stopped
@@ -23,6 +24,7 @@
 - block:
 
   - name: Stop Firewalld service
+    become: yes
     service:
       name: firewalld
       state: stopped
