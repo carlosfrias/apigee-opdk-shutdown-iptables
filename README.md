@@ -25,7 +25,7 @@ Example Playbook
 ----------------
 
     ---
-    - hosts: '{{ hosts }}'
+    - hosts: '{{ target_hosts }}'
       become: yes
       
       roles:
